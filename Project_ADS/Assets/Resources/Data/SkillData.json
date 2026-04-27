@@ -1,0 +1,25 @@
+{
+  "Skills": [
+    {
+      "skillID": 101,
+      "skillName": "파이어볼",
+      "iconPath": "Sprites/Skills/Fireball",
+      "cooldown": 3.5,
+      "power": 50.0
+    },
+    {
+      "skillID": 102,
+      "skillName": "아이스 애로우",
+      "iconPath": "Sprites/Skills/IceArrow",
+      "cooldown": 2.0,
+      "power": 35.5
+    },
+    {
+      "skillID": 201,
+      "skillName": "힐링 터치",
+      "iconPath": "Sprites/Skills/Heal",
+      "cooldown": 10.0,
+      "power": -20.0
+    }
+  ]
+}
