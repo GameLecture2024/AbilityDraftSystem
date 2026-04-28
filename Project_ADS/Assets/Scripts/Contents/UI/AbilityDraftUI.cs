@@ -1,14 +1,13 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class AbilityDraftUI : UI_popup
 {
-    // EnumÀ» ÅëÇØ ÇÏÀ§ ¿ÀºêÁ§Æ® ¹ÙÀÎµù °ü¸®
+    // Enumì„ í†µí•´ í•˜ìœ„ ì˜¤ë¸Œì íŠ¸ ë°”ì¸ë”© ê´€ë¦¬
     enum Texts
     {
-        Text_Title,
-        Text_Guide
+        Text_Title
     }
 
     enum GameObjects
@@ -20,14 +19,14 @@ public class AbilityDraftUI : UI_popup
     {
         base.Init();
 
-        // 1. ÄÄÆ÷³ÍÆ® ¹ÙÀÎµù
+        // 1. ì»´í¬ë„ŒíŠ¸ ë°”ì¸ë”©
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        // 2. ÃÊ±â µ¥ÀÌÅÍ ¼¼ÆÃ ¿¹½Ã
-        Get<Text>((int)Texts.Text_Title).text = "·¹º§ ¾÷!";
+        // 2. ì´ˆê¸° ë°ì´í„° ì„¸íŒ… ì˜ˆì‹œ
+        Get<TextMeshProUGUI>((int)Texts.Text_Title).text = "ë ˆë²¨ ì—…!";
 
-        // 3. ¾ÆÀÌÅÛ »ı¼º (SubItem È£Ãâ)
+        // 3. ì•„ì´í…œ ìƒì„± (SubItem í˜¸ì¶œ)
         RefreshAbilityList();
     }
 
@@ -35,11 +34,11 @@ public class AbilityDraftUI : UI_popup
     {
         GameObject container = Get<GameObject>((int)GameObjects.Grid_AbilityContainer);
 
-        // ±âÁ¸ ¸®½ºÆ® ÃÊ±âÈ­
+        // ê¸°ì¡´ ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
         foreach (Transform child in container.transform)
             Managers.Resource.Destroy(child.gameObject);
 
-        // µ¥ÀÌÅÍ¿¡ µû¶ó UI_SubItem »ı¼º (¿¹½Ã: 3È¸ ¹İº¹)
+        // ë°ì´í„°ì— ë”°ë¼ UI_SubItem ìƒì„± (ì˜ˆì‹œ: 3íšŒ ë°˜ë³µ)
         for (int i = 0; i < 3; i++)
         {
             Managers.UI.MakeSubItem<UI_AbilityItem>(container.transform);

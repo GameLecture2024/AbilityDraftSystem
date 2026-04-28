@@ -1,19 +1,17 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class UIManager : Singleton<UIManager>
 {
-    // UI ÃÖ»óÀ§ ·çÆ® °ü¸®
+    // UI ìµœìƒìœ„ ë£¨íŠ¸ ê´€ë¦¬
     private GameObject _uiRoot;
     public GameObject Root
     {
         get
         {
-            GameObject rootPrefab = Resources.Load<GameObject>("Prefabs/UI/UI_Root");
-            if (rootPrefab != null)
-            {
-                GameObject root = Object.Instantiate(rootPrefab);
-                root.name = "@UI_Root";
-            }
+            // _uiRootê°€ ì—†ìœ¼ë©´ ì´ˆê¸°í™” í•¨ìˆ˜ë¥¼ ì‹¤í–‰í•´ë¼
+            if (_uiRoot == null)
+                InitRoot();
+
             return _uiRoot;
         }
     }
@@ -22,10 +20,10 @@ public class UIManager : Singleton<UIManager>
     {
         if (_uiRoot != null) return;
 
-        // 1. ÇÏÀÌ¾î¶óÅ°¿¡¼­ ÀÌ¹Ì Á¸ÀçÇÏ´ÂÁö È®ÀÎ (Áßº¹ »ı¼º ¹æÁö)
+        // 1. í•˜ì´ì–´ë¼í‚¤ì—ì„œ ì´ë¯¸ ì¡´ì¬í•˜ëŠ”ì§€ í™•ì¸ (ì¤‘ë³µ ìƒì„± ë°©ì§€)
         _uiRoot = GameObject.Find("@UI_Root");
 
-        // 2. ¾ø´Ù¸é ÇÁ¸®ÆÕ ·Îµå ¹× »ı¼º
+        // 2. ì—†ë‹¤ë©´ í”„ë¦¬íŒ¹ ë¡œë“œ ë° ìƒì„±
         if (_uiRoot == null)
         {
             GameObject rootPrefab = Resources.Load<GameObject>("Prefabs/UI/UI_Root");
@@ -36,17 +34,24 @@ public class UIManager : Singleton<UIManager>
             }
             else
             {
-                // ÇÁ¸®ÆÕÀÌ ¾øÀ» °æ¿ì¸¦ ´ëºñÇÑ ±âº» ºó ¿ÀºêÁ§Æ® »ı¼º
+                // í”„ë¦¬íŒ¹ì´ ì—†ì„ ê²½ìš°ë¥¼ ëŒ€ë¹„í•œ ê¸°ë³¸ ë¹ˆ ì˜¤ë¸Œì íŠ¸ ìƒì„±
                 _uiRoot = new GameObject { name = "@UI_Root" };
-                Debug.LogWarning("UI_Root ÇÁ¸®ÆÕÀ» Ã£À» ¼ö ¾ø¾î ºó ¿ÀºêÁ§Æ®¸¦ »ı¼ºÇß½À´Ï´Ù.");
+                Debug.LogWarning("UI_Root í”„ë¦¬íŒ¹ì„ ì°¾ì„ ìˆ˜ ì—†ì–´ ë¹ˆ ì˜¤ë¸Œì íŠ¸ë¥¼ ìƒì„±í–ˆìŠµë‹ˆë‹¤.");
             }
         }
 
-        // ¾À ÀüÈ¯ ½Ã ÆÄ±«µÇÁö ¾Êµµ·Ï ¼³Á¤ (¼±ÅÃ »çÇ×)
-        Object.DontDestroyOnLoad(_uiRoot);
+        // --- ì¢Œí‘œ ë° í¬ê¸° ì„¤ì • ì½”ë“œ ì¶”ê°€ ---
+        Canvas canvas = _uiRoot.GetComponent<Canvas>();
+        if (canvas != null)
+        {
+            // UI_Rootê°€ Canvasë¥¼ ê°€ì§€ê³  ìˆë‹¤ë©´ RectTransformì„ 1920x1080ìœ¼ë¡œ ë§ì¶¤
+            RectTransform rect = _uiRoot.GetComponent<RectTransform>();
+            rect.localPosition = Vector3.zero; // ì¤‘ì‹¬ì  0,0,0
+            rect.sizeDelta = new Vector2(1920, 1080); // ê°€ë¡œ 1920, ì„¸ë¡œ 1080
+        }
     }
 
-    // --- 1. Scene UI: ¾À ÀüÈ¯ ½Ã ÁÖ·Î ÇÏ³ª¸¸ Á¸Àç ---
+    // --- 1. Scene UI: ì”¬ ì „í™˜ ì‹œ ì£¼ë¡œ í•˜ë‚˜ë§Œ ì¡´ì¬ ---
     public T ShowSceneUI<T>(string name = null) where T : UI_scene
     {
         if (string.IsNullOrEmpty(name)) name = typeof(T).Name;
@@ -55,11 +60,11 @@ public class UIManager : Singleton<UIManager>
         go.transform.SetParent(Root.transform);
 
         T sceneUI = go.GetComponent<T>();
-        sceneUI.Init(); // UI_BaseÀÇ ¹ÙÀÎµù ·ÎÁ÷ ½ÇÇà
+        sceneUI.Init(); // UI_Baseì˜ ë°”ì¸ë”© ë¡œì§ ì‹¤í–‰
         return sceneUI;
     }
 
-    // --- 2. Popup UI: ½ºÅÃ ±¸Á¶·Î ½×ÀÌ´Â ÆË¾÷ ---
+    // --- 2. Popup UI: ìŠ¤íƒ êµ¬ì¡°ë¡œ ìŒ“ì´ëŠ” íŒì—… ---
     public T ShowPopupUI<T>(string name = null) where T : UI_popup
     {
         if (string.IsNullOrEmpty(name)) name = typeof(T).Name;
@@ -72,7 +77,7 @@ public class UIManager : Singleton<UIManager>
         return popup;
     }
 
-    // --- 3. SubItem: ½ºÅ©·Ñ ºäÀÇ ¸®½ºÆ® ¾ÆÀÌÅÛ µî ---
+    // --- 3. SubItem: ìŠ¤í¬ë¡¤ ë·°ì˜ ë¦¬ìŠ¤íŠ¸ ì•„ì´í…œ ë“± ---
     public T MakeSubItem<T>(Transform parent, string name = null) where T : UI_subItem
     {
         if (string.IsNullOrEmpty(name)) name = typeof(T).Name;

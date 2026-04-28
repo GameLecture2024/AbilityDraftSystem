@@ -1,61 +1,61 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public interface IDataLoader<TKey, TValue>
 {
-    // µ¥ÀÌÅÍ¸¦ Dictionary ÇüÅÂ·Î º¯È¯ÇÏ¿© ¹İÈ¯
+    // ë°ì´í„°ë¥¼ Dictionary í˜•íƒœë¡œ ë³€í™˜í•˜ì—¬ ë°˜í™˜
     Dictionary<TKey, TValue> MakeDict();
 }
 
 public interface IValidation
 {
-    // µ¥ÀÌÅÍ ·Îµå ÈÄ À¯È¿¼º °ËÁõ (¿¹: ID Áßº¹, ÂüÁ¶ ¸®¼Ò½º ´©¶ô µî)
+    // ë°ì´í„° ë¡œë“œ í›„ ìœ íš¨ì„± ê²€ì¦ (ì˜ˆ: ID ì¤‘ë³µ, ì°¸ì¡° ë¦¬ì†ŒìŠ¤ ëˆ„ë½ ë“±)
     bool Validate();
 }
 
 public class DataManager : Singleton<DataManager>
 {
-    // ¿ÜºÎ¿¡¼­ Á¢±ÙÇÒ ¸ó½ºÅÍ µñ¼Å³Ê¸®
+    // ì™¸ë¶€ì—ì„œ ì ‘ê·¼í•  ëª¬ìŠ¤í„° ë”•ì…”ë„ˆë¦¬
     public Dictionary<string, MonsterData> MonsterDict { get; private set; } = new Dictionary<string, MonsterData>();
     public Dictionary<int, SkillData> SkillDict { get; private set; } = new Dictionary<int, SkillData>();
     public Dictionary<int, AbilityData> AbilityDict { get; private set; } = new Dictionary<int, AbilityData>();
 
-    // ResourceManager´Â ÀÌ¹Ì ·Îµå¸¦ ¿Ï·áÇÏ¿© ¸Ş¸ğ¸®¿¡ ¿¡¼ÂÀÌ ÀÖ´Ù°í °¡Á¤ÇÕ´Ï´Ù.
+    // ResourceManagerëŠ” ì´ë¯¸ ë¡œë“œë¥¼ ì™„ë£Œí•˜ì—¬ ë©”ëª¨ë¦¬ì— ì—ì…‹ì´ ìˆë‹¤ê³  ê°€ì •í•©ë‹ˆë‹¤.
     public void Init()
     {
-        // JSON ¸®¼Ò½º ·Îµå ¹× µ¥ÀÌÅÍÈ­
+        // JSON ë¦¬ì†ŒìŠ¤ ë¡œë“œ ë° ë°ì´í„°í™”
         MonsterDict = LoadJson<MonsterDataLoader, string, MonsterData>("MonsterData");
         SkillDict = LoadJson<SkillDataLoader, int, SkillData>("SkillData");
-        AbilityDict = LoadJson<AbilityDataLoader, int, AbilityData>("AbilityDdata");
+        AbilityDict = LoadJson<AbilityDataLoader, int, AbilityData>("AbilityData");
      
         if (MonsterDict == null )
         {
-            Debug.Log("MonsterDictÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.Log("MonsterDictì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
 
-        Debug.Log($"¸ó½ºÅÍ µ¥ÀÌÅÍ ·Îµå ¿Ï·á: {MonsterDict.Count}°³");
+        Debug.Log($"ëª¬ìŠ¤í„° ë°ì´í„° ë¡œë“œ ì™„ë£Œ: {MonsterDict.Count}ê°œ");
     }
 
     private Dictionary<TKey, TValue> LoadJson<TLoader, TKey, TValue>(string path)
         where TLoader : IDataLoader<TKey, TValue>
     {
-        // 1> ResourceManager¸¦ ÅëÇØ TextAsset °¡Á®¿À±â (ÀÌ¹Ì ¸Ş¸ğ¸®¿¡ ¿Ã¶ó¿Í ÀÖÀ½)
+        // 1> ResourceManagerë¥¼ í†µí•´ TextAsset ê°€ì ¸ì˜¤ê¸° (ì´ë¯¸ ë©”ëª¨ë¦¬ì— ì˜¬ë¼ì™€ ìˆìŒ)
         TextAsset textAsset = ResourceManager.Instance.Get<TextAsset>(path);
         if (textAsset == null) return null;
 
-        // 2> JSON ¿ªÁ÷·ÄÈ­
+        // 2> JSON ì—­ì§ë ¬í™”
         TLoader loader = JsonUtility.FromJson<TLoader>(textAsset.text);
 
-        // 3> Dictionary º¯È¯
+        // 3> Dictionary ë³€í™˜
         Dictionary<TKey, TValue> dict = loader.MakeDict();
 
-        // 4> IValidation Ã¼Å©
+        // 4> IValidation ì²´í¬
         foreach (var data in dict.Values)
         {
             if (data is IValidation validator)
             {
                 if (!validator.Validate())
-                    Debug.LogError($"[Validation Failed] {path} ¿¡ À¯È¿ÇÏÁö ¾ÊÀº µ¥ÀÌÅÍ°¡ ÀÖ½À´Ï´Ù.");
+                    Debug.LogError($"[Validation Failed] {path} ì— ìœ íš¨í•˜ì§€ ì•Šì€ ë°ì´í„°ê°€ ìˆìŠµë‹ˆë‹¤.");
             }
         }
 

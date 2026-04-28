@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,17 +6,17 @@ public class DraftScene : MonoBehaviour
 {
     void Start()
     {
-        // 1. ÃÊ±âÈ­ ¹× UI_Root »ı¼º È®ÀÎ
+        // 1. ì´ˆê¸°í™” ë° UI_Root ìƒì„± í™•ì¸
         Managers.Init();
 
-        // 2. Draft UI ÆË¾÷ ½ÇÇà
-        // ShowPopupUI´Â ³»ºÎÀûÀ¸·Î Resources/Prefabs/UI/Popup/AbilityDraftUI¸¦ ·ÎµåÇÕ´Ï´Ù.
-        AbilityDraftUI draftUI = Managers.UI.ShowPopupUI<AbilityDraftUI>();
+        // 2. Draft UI íŒì—… ì‹¤í–‰
+        // ShowPopupUIëŠ” ë‚´ë¶€ì ìœ¼ë¡œ Resources/Prefabs/UI/Popup/AbilityDraftUIë¥¼ ë¡œë“œí•©ë‹ˆë‹¤.
+        AbilityDraftUI draftUI = Managers.UI.ShowPopupUI<AbilityDraftUI>("AbilityDraftUI");
 
-        // 3. µ¥ÀÌÅÍ ·Îµå ¹× ¾ÆÀÌÅÛ »ı¼º Áö½Ã
+        // 3. ë°ì´í„° ë¡œë“œ ë° ì•„ì´í…œ ìƒì„± ì§€ì‹œ
         if (draftUI != null)
         {
-            // DataManager¿¡ ·ÎµåµÈ ´É·ÂÄ¡ Áß ·£´ıÀ¸·Î 3°³ ÃßÃâ
+            // DataManagerì— ë¡œë“œëœ ëŠ¥ë ¥ì¹˜ ì¤‘ ëœë¤ìœ¼ë¡œ 3ê°œ ì¶”ì¶œ
             List<AbilityData> randomAbilities = Managers.Data.AbilityDict.Values
                 .OrderBy(x => Random.value)
                 .Take(3)

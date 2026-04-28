@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
 
 public class UI_AbilityItem : UI_subItem
 {
-    // ¹ÙÀÎµùÇÒ ¿ÀºêÁ§Æ® ³×ÀÌ¹Ö ±ÔÄ¢
+    // ë°”ì¸ë”©í•  ì˜¤ë¸Œì íŠ¸ ë„¤ì´ë° ê·œì¹™
     enum Texts
     {
         Text_Name,
@@ -23,24 +23,24 @@ public class UI_AbilityItem : UI_subItem
         Button_Select
     }
 
-    // ¼±ÅÃ ½Ã ¿ÜºÎ(AbilityDraftUI)·Î ¾Ë¸®±â À§ÇÑ Äİ¹é
+    // ì„ íƒ ì‹œ ì™¸ë¶€(AbilityDraftUI)ë¡œ ì•Œë¦¬ê¸° ìœ„í•œ ì½œë°±
     private Action _onSelected;
 
     public override void Init()
     {
-        // 1. ÄÄÆ÷³ÍÆ® ÀÚµ¿ ¹ÙÀÎµù
+        // 1. ì»´í¬ë„ŒíŠ¸ ìë™ ë°”ì¸ë”©
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<Button>(typeof(Buttons));
 
-        // 2. ¹öÆ° Å¬¸¯ ÀÌº¥Æ® ¸®½º³Ê µî·Ï
-        // Event´Â EventManager°¡ ´ã´çÇÏ±â ¶§¹®¿¡ Button ¿¬°á ±â´ÉÀ» Event·Î Ã³¸®ÇÏ´Â ÄÚµå·Î ÇØÁà.
+        // 2. ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+        // EventëŠ” EventManagerê°€ ë‹´ë‹¹í•˜ê¸° ë•Œë¬¸ì— Button ì—°ê²° ê¸°ëŠ¥ì„ Eventë¡œ ì²˜ë¦¬í•˜ëŠ” ì½”ë“œë¡œ í•´ì¤˜.
         // 
         Get<Button>((int)Buttons.Button_Select).onClick.AddListener(OnClickSelectItem);
     }
 
     /// <summary>
-    /// ¾ÆÀÌÅÛÀÇ Á¤º¸¸¦ UI¿¡ ¼¼ÆÃÇÏ´Â ÇÔ¼ö
+    /// ì•„ì´í…œì˜ ì •ë³´ë¥¼ UIì— ì„¸íŒ…í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void SetInfo(string name, string level, string desc, Sprite icon, Action onSelected)
     {
@@ -54,9 +54,9 @@ public class UI_AbilityItem : UI_subItem
 
     private void OnClickSelectItem()
     {
-        Debug.Log($"¾ÆÀÌÅÛ ¼±ÅÃµÊ: {Get<Text>((int)Texts.Text_Name).text}");
+        Debug.Log($"ì•„ì´í…œ ì„ íƒë¨: {Get<Text>((int)Texts.Text_Name).text}");
 
-        // Äİ¹é ½ÇÇà (µ¥ÀÌÅÍ Àû¿ë ¹× ÆË¾÷ ´İ±â µî)
+        // ì½œë°± ì‹¤í–‰ (ë°ì´í„° ì ìš© ë° íŒì—… ë‹«ê¸° ë“±)
         _onSelected?.Invoke();
     }
 }

@@ -1,15 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
     private static Managers _instance;
-    private static Managers Instance { get { Init(); return _instance; } }
+    private static Managers Instance { get {  return _instance; } }
 
-    // °³º° ¸Å´ÏÀú ¼Ó¼º (±âÁ¸ ½Ì±ÛÅæ ÀÎ½ºÅÏ½º ¿¬°á)
-    public static DataManager Data => DataManager.Instance;
-    public static ResourceManager Resource => ResourceManager.Instance;
-    public static SceneManagerEx Scene => SceneManagerEx.Instance;
-    public static UIManager UI => UIManager.Instance;
+    private DataManager _data;
+    private ResourceManager _resource;
+    private SceneManagerEx _scene;
+    private UIManager _ui;
+
+    // ê°œë³„ ë§¤ë‹ˆì € ì†ì„± (ê¸°ì¡´ ì‹±ê¸€í†¤ ì¸ìŠ¤í„´ìŠ¤ ì—°ê²°)
+    public static DataManager Data => Instance?._data;
+    public static ResourceManager Resource => Instance?._resource;
+    public static SceneManagerEx Scene => Instance?._scene;
+    public static UIManager UI => Instance?._ui;
 
     public static void Init()
     {
@@ -25,20 +30,50 @@ public class Managers : MonoBehaviour
             DontDestroyOnLoad(go);
             _instance = go.GetComponent<Managers>();
 
-            // ÃÊ±âÈ­ ¼ø¼­ Á¦¾î: ¸®¼Ò½º ¸Å´ÏÀú°¡ ¸ÕÀú µ¥ÀÌÅÍ¸¦ µé°í ÀÖ¾î¾ß µ¥ÀÌÅÍ ¸Å´ÏÀú°¡ ÆÄ½Ì °¡´É
-            // (ÇÊ¿ä ½Ã ResourceManager.Instance.LoadAll<TextAsset>("Data") µîÀ» ¸ÕÀú ¼öÇà)
+            // ì´ˆê¸°í™” ìˆœì„œ ì œì–´: ë¦¬ì†ŒìŠ¤ ë§¤ë‹ˆì €ê°€ ë¨¼ì € ë°ì´í„°ë¥¼ ë“¤ê³  ìˆì–´ì•¼ ë°ì´í„° ë§¤ë‹ˆì €ê°€ íŒŒì‹± ê°€ëŠ¥
+            // (í•„ìš” ì‹œ ResourceManager.Instance.LoadAll<TextAsset>("Data") ë“±ì„ ë¨¼ì € ìˆ˜í–‰)
             _instance.InitAllManagers();
         }
     }
 
     private void InitAllManagers()
     {
+        _resource = CreateManagerChild<ResourceManager>();
+        _data = CreateManagerChild<DataManager>();
+        _scene = CreateManagerChild<SceneManagerEx>();
+        _ui = CreateManagerChild<UIManager>();
+
         Resource.LoadAll<TextAsset>("Data");
 
-        // µ¥ÀÌÅÍ ¸Å´ÏÀú ÃÊ±âÈ­ (JSON ·Îµå µî)
-        Data.Init();
+        // ë°ì´í„° ë§¤ë‹ˆì € ì´ˆê¸°í™” (JSON ë¡œë“œ ë“±)
+        _data.Init();
         UI.InitRoot();
         Debug.Log("Framework: All Managers Initialized.");
+    }
+
+    private T CreateManagerChild<T>() where T : Component
+    {
+        // ì´ë¯¸ ìì‹ìœ¼ë¡œ í•´ë‹¹ ì´ë¦„ì˜ ì˜¤ë¸Œì íŠ¸ê°€ ìˆëŠ”ì§€ ì²´í¬
+        Transform child = transform.Find(typeof(T).Name);
+        GameObject go;
+
+        if (child != null)
+        {
+            go = child.gameObject;
+        }
+        else
+        {
+            // ì—†ìœ¼ë©´ ìƒˆë¡œ ìƒì„± í›„ ë¶€ëª¨ ì„¤ì •
+            go = new GameObject { name = typeof(T).Name };
+            go.transform.SetParent(this.transform);
+        }
+
+        // ì»´í¬ë„ŒíŠ¸ê°€ ìˆìœ¼ë©´ ê°€ì ¸ì˜¤ê³  ì—†ìœ¼ë©´ ì¶”ê°€
+        T component = go.GetComponent<T>();
+        if (component == null)
+            component = go.AddComponent<T>();
+
+        return component;
     }
 }
 
