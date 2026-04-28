@@ -1,36 +1,29 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class DraftScene : MonoBehaviour
 {
     void Start()
     {
-        // 1. 프레임워크 초기화 (Managers 접근 시 자동 Init)
-        Debug.Log($"[DraftScene] Framework loading...");
-
-        // 2. 리소스 일괄 로드 예시 (Data 폴더 내 JSON 파일들)
-        // ResourceManager에 LoadAll이 구현되어 있으므로 경로를 지정해 미리 캐싱합니다.
+        // 1. 초기화 및 UI_Root 생성 확인
         Managers.Init();
 
-        // 3. 데이터 로드 및 검증 (DataManager.Init은 Managers.InitAllManagers에서 호출됨)
-        var monsterDict = Managers.Data.MonsterDict;
+        // 2. Draft UI 팝업 실행
+        // ShowPopupUI는 내부적으로 Resources/Prefabs/UI/Popup/AbilityDraftUI를 로드합니다.
+        AbilityDraftUI draftUI = Managers.UI.ShowPopupUI<AbilityDraftUI>();
 
-        if (monsterDict != null && monsterDict.Count > 0)
+        // 3. 데이터 로드 및 아이템 생성 지시
+        if (draftUI != null)
         {
-            Debug.Log("--- Data Validation Start ---");
-            foreach (var monster in monsterDict.Values)
-            {
-                Debug.Log($"몬스터 확인: ID={monster.name}, HP={monster.hp}");
-            }
-            Debug.Log("--- Data Validation Success ---");
-        }
-        else
-        {
-            Debug.LogError("데이터가 로드되지 않았습니다. JSON 파일명과 경로를 확인하세요.");
-        }
+            // DataManager에 로드된 능력치 중 랜덤으로 3개 추출
+            List<AbilityData> randomAbilities = Managers.Data.AbilityDict.Values
+                .OrderBy(x => Random.value)
+                .Take(3)
+                .ToList();
 
-        // 4. 리소스 매니저를 통한 오브젝트 생성 예시
-        // Managers.Resource.Instantiate("MonsterPrefab");
+            draftUI.RefreshAbilityList();
+        }
     }
+
 }
-
-

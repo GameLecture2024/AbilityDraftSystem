@@ -8,9 +8,42 @@ public class UIManager : Singleton<UIManager>
     {
         get
         {
-            if (_uiRoot == null) _uiRoot = ResourceManager.Instance.Instantiate("@UI_Root");
+            GameObject rootPrefab = Resources.Load<GameObject>("Prefabs/UI/UI_Root");
+            if (rootPrefab != null)
+            {
+                GameObject root = Object.Instantiate(rootPrefab);
+                root.name = "@UI_Root";
+            }
             return _uiRoot;
         }
+    }
+
+    public void InitRoot()
+    {
+        if (_uiRoot != null) return;
+
+        // 1. 하이어라키에서 이미 존재하는지 확인 (중복 생성 방지)
+        _uiRoot = GameObject.Find("@UI_Root");
+
+        // 2. 없다면 프리팹 로드 및 생성
+        if (_uiRoot == null)
+        {
+            GameObject rootPrefab = Resources.Load<GameObject>("Prefabs/UI/UI_Root");
+            if (rootPrefab != null)
+            {
+                _uiRoot = Object.Instantiate(rootPrefab);
+                _uiRoot.name = "@UI_Root";
+            }
+            else
+            {
+                // 프리팹이 없을 경우를 대비한 기본 빈 오브젝트 생성
+                _uiRoot = new GameObject { name = "@UI_Root" };
+                Debug.LogWarning("UI_Root 프리팹을 찾을 수 없어 빈 오브젝트를 생성했습니다.");
+            }
+        }
+
+        // 씬 전환 시 파괴되지 않도록 설정 (선택 사항)
+        Object.DontDestroyOnLoad(_uiRoot);
     }
 
     // --- 1. Scene UI: 씬 전환 시 주로 하나만 존재 ---
@@ -18,7 +51,7 @@ public class UIManager : Singleton<UIManager>
     {
         if (string.IsNullOrEmpty(name)) name = typeof(T).Name;
 
-        GameObject go = Instantiate(Resources.Load<GameObject>($"Prefabs/UI/TestSceneUI/Scene/{name}")); 
+        GameObject go = Instantiate(Resources.Load<GameObject>($"Prefabs/UI/Scene/{name}")); 
         go.transform.SetParent(Root.transform);
 
         T sceneUI = go.GetComponent<T>();

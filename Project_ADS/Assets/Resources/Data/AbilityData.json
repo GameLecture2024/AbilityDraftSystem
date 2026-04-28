@@ -1,0 +1,40 @@
+{
+  "Abilities": [
+    {
+      "id": 1,
+      "name": "마법 지팡이",
+      "description": "가장 가까운 적에게 마법 화살을 발사합니다.",
+      "levelInfo": "레벨 2",
+      "iconName": "Icon_MagicWand",
+      "effectValue": 1.0,
+      "attributeType": "ProjectileCount"
+    },
+    {
+      "id": 2,
+      "name": "성서",
+      "description": "캐릭터 주변을 회전하는 성서를 소환합니다.",
+      "levelInfo": "레벨 1",
+      "iconName": "Icon_KingBible",
+      "effectValue": 1.0,
+      "attributeType": "Area"
+    },
+    {
+      "id": 3,
+      "name": "빈 심장",
+      "description": "최대 체력이 10% 증가합니다.",
+      "levelInfo": "레벨 3",
+      "iconName": "Icon_HollowHeart",
+      "effectValue": 0.1,
+      "attributeType": "MaxHP"
+    },
+    {
+      "id": 4,
+      "name": "마늘",
+      "description": "자신 주변에 데미지를 주는 오라를 생성합니다.",
+      "levelInfo": "신규",
+      "iconName": "Icon_Garlic",
+      "effectValue": 1.5,
+      "attributeType": "AuraRange"
+    }
+  ]
+}

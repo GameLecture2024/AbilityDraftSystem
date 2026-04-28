@@ -18,6 +18,7 @@ public class DataManager : Singleton<DataManager>
     // 외부에서 접근할 몬스터 딕셔너리
     public Dictionary<string, MonsterData> MonsterDict { get; private set; } = new Dictionary<string, MonsterData>();
     public Dictionary<int, SkillData> SkillDict { get; private set; } = new Dictionary<int, SkillData>();
+    public Dictionary<int, AbilityData> AbilityDict { get; private set; } = new Dictionary<int, AbilityData>();
 
     // ResourceManager는 이미 로드를 완료하여 메모리에 에셋이 있다고 가정합니다.
     public void Init()
@@ -25,7 +26,8 @@ public class DataManager : Singleton<DataManager>
         // JSON 리소스 로드 및 데이터화
         MonsterDict = LoadJson<MonsterDataLoader, string, MonsterData>("MonsterData");
         SkillDict = LoadJson<SkillDataLoader, int, SkillData>("SkillData");
-
+        AbilityDict = LoadJson<AbilityDataLoader, int, AbilityData>("AbilityDdata");
+     
         if (MonsterDict == null )
         {
             Debug.Log("MonsterDict을 찾을 수 없습니다.");

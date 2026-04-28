@@ -9,6 +9,7 @@ public class Managers : MonoBehaviour
     public static DataManager Data => DataManager.Instance;
     public static ResourceManager Resource => ResourceManager.Instance;
     public static SceneManagerEx Scene => SceneManagerEx.Instance;
+    public static UIManager UI => UIManager.Instance;
 
     public static void Init()
     {
@@ -36,6 +37,7 @@ public class Managers : MonoBehaviour
 
         // 데이터 매니저 초기화 (JSON 로드 등)
         Data.Init();
+        UI.InitRoot();
         Debug.Log("Framework: All Managers Initialized.");
     }
 }
