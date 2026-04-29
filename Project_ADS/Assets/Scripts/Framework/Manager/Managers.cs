@@ -44,7 +44,8 @@ public class Managers : MonoBehaviour
         _ui = CreateManagerChild<UIManager>();
 
         Resource.LoadAll<TextAsset>("Data");
-
+        Resource.LoadAll<Texture2D>("Sprite");
+        
         // 데이터 매니저 초기화 (JSON 로드 등)
         _data.Init();
         UI.InitRoot();

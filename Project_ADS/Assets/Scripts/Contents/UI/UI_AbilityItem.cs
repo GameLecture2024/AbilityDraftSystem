@@ -52,6 +52,21 @@ public class UI_AbilityItem : UI_subItem
         _onSelected = onSelected;
     }
 
+    public void SetInfo(AbilityData ability)
+    {
+        // 1. 텍스트 정보 세팅
+        Get<TextMeshProUGUI>((int)Texts.Text_Name).text = ability.name;
+        Get<TextMeshProUGUI>((int)Texts.Text_Level).text = ability.levelInfo.ToString();
+        Get<TextMeshProUGUI>((int)Texts.Text_Description).text = ability.description;
+
+        // ability.iconName(string)을 사용하여 직접 Sprite를 가져오는 방식
+
+        if (Managers.Data.IconDict.TryGetValue(ability.iconName, out var iconData))
+        {
+            Get<Image>((int)Images.Image_Icon).sprite = iconData.iconSprite;
+        }
+    }
+
     private void OnClickSelectItem()
     {
         Debug.Log($"아이템 선택됨: {Get<Text>((int)Texts.Text_Name).text}");

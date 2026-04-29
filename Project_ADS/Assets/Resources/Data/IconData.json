@@ -1,0 +1,20 @@
+{
+  "Icons": [
+    {
+      "iconName": "Icon_MagicWand",
+      "description": "마법 지팡이 아이콘"
+    },
+    {
+      "iconName": "Icon_KingBible",
+      "description": "성서 아이콘"
+    },
+    {
+      "iconName": "Icon_HollowHeart",
+      "description": "빈 심장 아이콘"
+    },
+    {
+      "iconName": "Icon_Garlic",
+      "description": "마늘 아이콘"
+    }
+  ]
+}

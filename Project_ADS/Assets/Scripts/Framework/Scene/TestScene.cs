@@ -3,34 +3,11 @@ using UnityEngine;
 public class TestScene : BaseScene
 {
 
-    private void Start()
+    private void Awake()
     {
-        // 씬이 열렸을 떄 해야할 모든일을 여기다 정의.
+        Managers.Init();
 
-        // 필수적인 프레임워크들을 전부 유니티 씬 올려놔야 된다.
 
-        ResourceManager resourceManager = new ResourceManager();
-        DataManager dataManager = new DataManager();
-
-        //ResourceManager.Instance.LoadAll<GameObject>("")
-        ResourceManager.Instance.LoadAll<TextAsset>("Data");
-        ResourceManager.Instance.LoadAll<GameObject>("Prefabs");
-        DataManager.Instance.Init();
-
-        // Contents
-
-        ResourceManager.Instance.Instantiate("@UI_Root");
-
-        TestSceneUI testSceneUI = UIManager.Instance.ShowSceneUI<TestSceneUI>("TestUI_Scene");
-
-        testSceneUI.Init();
-
-        // Text Prefab. [1] [2] 정보가 들어가야 한다. UI_... 디테일한 정보를 전달해주자.
-
-        //PrintAllMonsterNames();
-        // 콘텐츠 제작. UIManager ObjectManager PoolManager 
-
-        //SceneManagerEx.Instance.LoadScene(Defines.EScene.MAINSCENE);
     }
 
     public void PrintAllMonsterNames()

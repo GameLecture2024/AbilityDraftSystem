@@ -16,12 +16,6 @@ public class DraftScene : MonoBehaviour
         // 3. 데이터 로드 및 아이템 생성 지시
         if (draftUI != null)
         {
-            // DataManager에 로드된 능력치 중 랜덤으로 3개 추출
-            List<AbilityData> randomAbilities = Managers.Data.AbilityDict.Values
-                .OrderBy(x => Random.value)
-                .Take(3)
-                .ToList();
-
             draftUI.RefreshAbilityList();
         }
     }

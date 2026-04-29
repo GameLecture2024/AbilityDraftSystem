@@ -45,4 +45,6 @@ public class SkillData : ScriptableObject
 *   **Player_Hand_Slot**: 플레이어가 선택한 스킬이 담길 인벤토리 UI 영역.
 
 ---
-**Next Step:** 위 워크플로우에 따라 **Day 1: 15분 마일스톤인 `SkillData.cs` 코드 작성**을 바로 시작할까요?
+**Next Step:** 
+
+- Framework - Plan 결합하는 방법을 생각하기.
