@@ -15,7 +15,8 @@ public class UI_AbilityItem : UI_subItem
 
     enum Images
     {
-        Image_Icon
+        Button_Select,
+        Icon
     }
 
     enum Buttons
@@ -39,19 +40,6 @@ public class UI_AbilityItem : UI_subItem
         Get<Button>((int)Buttons.Button_Select).onClick.AddListener(OnClickSelectItem);
     }
 
-    /// <summary>
-    /// 아이템의 정보를 UI에 세팅하는 함수
-    /// </summary>
-    public void SetInfo(string name, string level, string desc, Sprite icon, Action onSelected)
-    {
-        Get<Text>((int)Texts.Text_Name).text = name;
-        Get<Text>((int)Texts.Text_Level).text = level;
-        Get<Text>((int)Texts.Text_Description).text = desc;
-        Get<Image>((int)Images.Image_Icon).sprite = icon;
-
-        _onSelected = onSelected;
-    }
-
     public void SetInfo(AbilityData ability)
     {
         // 1. 텍스트 정보 세팅
@@ -63,13 +51,13 @@ public class UI_AbilityItem : UI_subItem
 
         if (Managers.Data.IconDict.TryGetValue(ability.iconName, out var iconData))
         {
-            Get<Image>((int)Images.Image_Icon).sprite = iconData.iconSprite;
+            Get<Image>((int)Images.Icon).sprite = iconData.iconSprite;
         }
     }
 
     private void OnClickSelectItem()
     {
-        Debug.Log($"아이템 선택됨: {Get<Text>((int)Texts.Text_Name).text}");
+        Debug.Log($"아이템 선택됨: {Get<TextMeshProUGUI>((int)Texts.Text_Name).text}");
 
         // 콜백 실행 (데이터 적용 및 팝업 닫기 등)
         _onSelected?.Invoke();

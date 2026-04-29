@@ -53,7 +53,7 @@ public class AbilityDraftUI : UI_popup
         {
             // UI_AbilityItem 생성
             UI_AbilityItem item = Managers.UI.MakeSubItem<UI_AbilityItem>(container.transform);
-            item.Init();
+            //item.Init();
             // 데이터 주입
             if (item != null)
             {
